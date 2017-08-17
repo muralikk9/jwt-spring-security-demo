@@ -4,6 +4,8 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.spring.common.utils.TimeProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,6 +20,8 @@ import java.util.Map;
 
 @Component
 public class JwtTokenUtil implements Serializable {
+	
+	private static final Logger logger = LoggerFactory.getLogger(JwtTokenUtil.class);
 
     private static final long serialVersionUID = -3301605591108950415L;
 
@@ -139,7 +143,8 @@ public class JwtTokenUtil implements Serializable {
         final Date createdDate = (Date) claims.get(CLAIM_KEY_CREATED);
         final Date expirationDate = new Date(createdDate.getTime() + expiration * 1000);
 
-        System.out.println("doGenerateToken " + createdDate);
+        logger.info("Token Generated at " + createdDate);
+        logger.info("Token Expiration time " + expirationDate);
 
         return Jwts.builder()
                 .setClaims(claims)
